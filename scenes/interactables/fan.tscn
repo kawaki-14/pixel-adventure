@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://bearqgwsvbopq"]
+
+[ext_resource type="Script" uid="uid://xm7r21abuux8" path="res://scripts/interactibles/fan.gd" id="1_g04a1"]
+[ext_resource type="Texture2D" uid="uid://gh4n6koamaan" path="res://assets/Traps/Fan/Off.png" id="1_n71vf"]
+[ext_resource type="Texture2D" uid="uid://4m41uxrmjg03" path="res://assets/Traps/Fan/On (24x8).png" id="2_g04a1"]
+[ext_resource type="Texture2D" uid="uid://bdvht4824vkm" path="res://assets/Other/Dust Particle.png" id="4_na76a"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_na76a"]
+atlas = ExtResource("1_n71vf")
+region = Rect2(0, 0, 24, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7da8d"]
+atlas = ExtResource("2_g04a1")
+region = Rect2(0, 0, 24, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6rko8"]
+atlas = ExtResource("2_g04a1")
+region = Rect2(24, 0, 24, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gd7qv"]
+atlas = ExtResource("2_g04a1")
+region = Rect2(48, 0, 24, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22rn0"]
+atlas = ExtResource("2_g04a1")
+region = Rect2(72, 0, 24, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1vivr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_na76a")
+}],
+"loop": 1,
+"name": &"off",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7da8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6rko8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gd7qv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22rn0")
+}],
+"loop": 1,
+"name": &"on",
+"speed": 20.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5gy4"]
+size = Vector2(23, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7da8d"]
+resource_local_to_scene = true
+size = Vector2(32, 128)
+
+[sub_resource type="Gradient" id="Gradient_na76a"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gd7qv"]
+gradient = SubResource("Gradient_na76a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6rko8"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(11, 1, 0)
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 250.0
+initial_velocity_max = 250.0
+gravity = Vector3(0, -98, 0)
+color_ramp = SubResource("GradientTexture1D_gd7qv")
+
+[node name="Fan" type="StaticBody2D" unique_id=838486963]
+scale = Vector2(3, 3)
+script = ExtResource("1_g04a1")
+wind_velocity = null
+wind_size = null
+initial_wait_time = null
+is_on = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=49615623]
+sprite_frames = SubResource("SpriteFrames_1vivr")
+animation = &"on"
+autoplay = "on"
+frame_progress = 0.61239886
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=410343178]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_v5gy4")
+
+[node name="WindArea" type="Area2D" parent="." unique_id=540155046]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WindArea" unique_id=1314742269]
+position = Vector2(0, -64)
+shape = SubResource("RectangleShape2D_7da8d")
+debug_color = Color(3.1525642e-06, 0.651371, 0.039746568, 0.41960785)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="WindArea" unique_id=1294975854]
+position = Vector2(0, -5)
+amount = 15
+texture = ExtResource("4_na76a")
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_6rko8")
+
+[node name="Timer" type="Timer" parent="." unique_id=1779488979]
+wait_time = 3.0
+
+[connection signal="body_entered" from="WindArea" to="." method="_on_wind_area_body_entered"]
+[connection signal="body_exited" from="WindArea" to="." method="_on_wind_area_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

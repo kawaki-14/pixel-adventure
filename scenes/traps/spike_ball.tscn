@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://d3ndwbxvkvwkh"]
+
+[ext_resource type="Script" uid="uid://dvksh62y2bni1" path="res://scripts/traps/spike_ball.gd" id="1_5r8wu"]
+[ext_resource type="Texture2D" uid="uid://dmauaraduilw4" path="res://assets/Traps/Spiked Ball/Chain.png" id="2_id450"]
+[ext_resource type="Texture2D" uid="uid://ds0bm21u8v0ek" path="res://assets/Traps/Spiked Ball/Spiked Ball.png" id="3_xmmdp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1vivr"]
+radius = 11.0
+
+[node name="SpikeBall" type="Node2D" unique_id=323287385]
+scale = Vector2(3, 3)
+script = ExtResource("1_5r8wu")
+
+[node name="Chain" type="Sprite2D" parent="." unique_id=113135024]
+texture_repeat = 2
+texture = ExtResource("2_id450")
+centered = false
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=65228284]
+
+[node name="Sprite2D" type="Sprite2D" parent="Hitbox" unique_id=163983921]
+texture = ExtResource("3_xmmdp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1869597668]
+shape = SubResource("CircleShape2D_1vivr")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://3gguotsooqja"]
+
+[ext_resource type="Script" uid="uid://dbkgfld73h6ee" path="res://scripts/enemies/trunk_projectile.gd" id="1_jqnjs"]
+[ext_resource type="Texture2D" uid="uid://clt3wvwlf5mj6" path="res://assets/Enemies/Trunk/Bullet.png" id="1_ub556"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1vivr"]
+radius = 3.3499587
+
+[node name="TrunkProjectile" type="Area2D" unique_id=925785004]
+scale = Vector2(3, 3)
+script = ExtResource("1_jqnjs")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2143887174]
+texture = ExtResource("1_ub556")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1217099930]
+position = Vector2(1.3333334, 0.33333334)
+shape = SubResource("CircleShape2D_1vivr")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1951847128]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
