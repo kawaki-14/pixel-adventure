@@ -4,7 +4,7 @@ extends Node2D
 
 const path_begin = "res://scenes/levels/level"
 var current_level_root: Node = null
-var level: int = 6
+var level: int = 9
 var score: int = 0
 
 func _ready() -> void:
